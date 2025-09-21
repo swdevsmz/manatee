@@ -4,3 +4,4 @@ twine
 hatch
 build
 setuptools
+boto3

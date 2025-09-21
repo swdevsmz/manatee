@@ -1,39 +1,50 @@
-<img width=100% src="docs/assets/img/logo.png">
+# ManaTEE on Minikube (ローカル開発環境)
 
-# ManaTEE Project
+このドキュメントは、Minikubeを使用してローカルPC上にManaTEEのテスト環境を構築し、チュートリアルを実行する手順について説明します。オリジナルのREADMEは `README.original.md` にリネームされています。
 
-ManaTEE is an open-source project for easily building and deploying data collaboration framework to the cloud using trusted execution environments (TEEs).
-It allows users to easily collaborate on private datasets without leaking privacy of individual data.
-ManaTEE achieves this by combining different privacy-enhancing technologies (PETs) in different stages.
+## 概要
 
-# What does it offer?
+開発とテストを容易にするため、GCP環境を必要としないMinikubeベースのセットアップが用意されています。`build.sh` スクリプトは、必要なツールのインストールからManateeのデプロイまで、環境構築の全プロセスを自動化します。
 
-ManaTEE allows organizations to quickly customize and deploy data collaboration framework in the cloud.
-The organizations can provide an programming environment to the external data scientists to conduct research, while protecting the data privacy with a custom policy.
+**注意:** この環境は実際のTEE（Trusted Execution Environment）を使用しないため、セキュリティ機能の検証ではなく、アプリケーションの動作確認や開発を目的としています。
 
-> Note: ManaTEE is under active development, and it is not production-ready. We are looking forward to your feedback and contributions. 
+## 1. ローカル環境構築
 
-# Quick Start
+環境構築に必要なすべてのステップは `build.sh` にまとめられています。
 
-Install Bazel with [Bazelisk](https://github.com/bazelbuild/bazelisk):
-```sh
-brew install bazelisk # on MacOS
-choco install bazelisk # on Windows
-```
-On Ubuntu, download the latest Bazelisk binary via [Releases](https://github.com/bazelbuild/bazelisk/releases)
+### 前提条件
 
-Build all images
-```
-bazelisk build //...
-```
+スクリプトは以下のツールが不足している場合、自動でインストールを試みます。
+- Docker
+- Bazelisk
+- Minikube
+- kubectl
+- mc (MinIO Client)
 
-Run all tests
-```
-bazelisk test //...
+### 実行
+
+リポジトリのルートディレクトリで以下のコマンドを実行してください。
+
+```bash
+bash build.sh
 ```
 
-See [documents](https://manatee-project.github.io/manatee) for more details including cloud deployment.
-# License
+このコマンドは、既存のMinikubeクラスタを削除した後、新しいクラスタの作成、コンテナイメージのビルド、Kubernetesリソース（MinIO, MySQL）の作成、そしてHelmによるManateeとJupyterHubのデプロイまで、すべてを自動で行います。
 
-ManaTEE is licensed under the Apache License 2.0.
-See [LICENSE](LICENSE) for details.
+## 2. チュートリアルの実行
+
+環境構築が完了したら、チュートリアル用のデータを準備し、JupyterLabで分析を実行します。
+
+### データ準備
+
+`tutorials` ディレクトリに移動し、データ準備用のスクリプトを実行します。
+
+```bash
+cd tutorials && bash run_tutorial_jp.sh
+```
+
+このスクリプトは、Minikube上で動作しているMinIOオブジェクトストレージに接続し、チュートリアルに必要なデータ（`stage1`, `stage2` バケットとCSVファイル）を自動で準備します。
+
+### JupyterLabでの操作
+
+`run_tutorial_jp.sh` の実行が完了すると、ターミナルに後続の作業手順が表示されます。その案内に従い、JupyterLabにアクセスし、ノートブックを実行してください。
