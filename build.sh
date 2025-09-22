@@ -53,6 +53,16 @@ if ! command -v kubectl &> /dev/null; then
 	echo "[INFO] kubectlをインストールしました。"
 fi
 
+# Helm
+if ! command -v helm &> /dev/null; then
+    echo "[INFO] Helmが見つかりません。インストールを開始します..."
+    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    chmod 700 get_helm.sh
+    ./get_helm.sh
+    rm get_helm.sh
+    echo "[INFO] Helmをインストールしました。"
+fi
+
 # mc (MinIO Client)
 if ! command -v mc &> /dev/null; then
     echo "[INFO] mc (MinIO Client)が見つかりません。インストールを開始します..."
