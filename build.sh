@@ -74,6 +74,14 @@ if ! command -v terraform &> /dev/null; then
     echo "[INFO] Terraformをインストールしました。"
 fi
 
+# build-essential (for gcc, etc.)
+if ! command -v gcc &> /dev/null; then
+    echo "[INFO] GCCが見つかりません。build-essentialをインストールします..."
+    sudo apt-get update
+    sudo apt-get install -y build-essential
+    echo "[INFO] build-essentialをインストールしました。"
+fi
+
 # 0.5. 既存のMinikube環境をクリーンアップ
 echo "[INFO] 既存のMinikubeクラスタを削除して、クリーンな状態から開始します..."
 if minikube status &> /dev/null; then
