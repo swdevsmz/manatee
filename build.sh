@@ -58,6 +58,9 @@ if ! command -v helm &> /dev/null; then
     echo "[INFO] Helmが見つかりません。インストールを開始します..."
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
     chmod 700 get_helm.sh
+	# SSL証明書の検証を無効化
+	sed -i 's/curl -L --silent --show-error --fail/curl -L --silent --show-error --fail --insecure/g' get_helm.sh
+	sed -i 's/curl -Ssl/curl -Ssl --insecure/g' get_helm.sh
     ./get_helm.sh
     rm get_helm.sh
     echo "[INFO] Helmをインストールしました。"
@@ -103,7 +106,8 @@ fi
 
 
 # 1. Minikubeクラスタ起動
-minikube start --memory=12192mb --cpus=8 --disk-size=50g --insecure-registry "10.0.0.0/24"
+# minikube start --memory=12192mb --cpus=8 --disk-size=50g --insecure-registry "10.0.0.0/24"
+minikube start --memory=8000mb --cpus=4 --disk-size=50g --insecure-registry "10.0.0.0/24"
 
 # 2. Minikube用リソース適用
 pushd resources/minikube
