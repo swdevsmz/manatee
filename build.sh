@@ -107,7 +107,7 @@ fi
 
 # 1. Minikubeクラスタ起動
 # minikube start --memory=12192mb --cpus=8 --disk-size=50g --insecure-registry "10.0.0.0/24"
-minikube start --memory=8000mb --cpus=4 --disk-size=50g --insecure-registry "10.0.0.0/24"
+minikube start --memory=12000mb --cpus=4 --disk-size=50g --insecure-registry "10.0.0.0/24"
 
 # 2. Minikube用リソース適用
 pushd resources/minikube
