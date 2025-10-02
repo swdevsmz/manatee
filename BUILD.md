@@ -35,11 +35,11 @@ ManaTEEは**3層のインフラ構造**を持っています:
 
 ManaTEEは3つのデプロイメント環境に対応しています:
 
-| 環境 | 説明 | 使用スクリプト | TEEバックエンド |
-|------|------|----------------|-----------------|
-| **Minikube** | ローカル開発環境 | `build.sh` (自動一括実行) | Mock (K8s Job) |
-| **GCP Dev** | GCP開発環境 | 手動実行 (`apply.sh` → `deploy.sh`) | Mock or Confidential Space |
-| **GCP Prod** | GCP本番環境 | 手動実行 (`apply.sh` → `deploy.sh`) | Confidential Space |
+| 環境 | 実行コマンド | 備考 |
+|------|-------------|------|
+| **GCP Global** | `cd resources/global && ./apply.sh` | Terraform Init + Apply |
+| **GCP Deployment** | `cd resources/deployment && ./apply.sh` | Terraform Init + Apply |
+| **Minikube** | `./SETUP_MINIKUBE.sh` | 全自動 |
 
 ---
 
@@ -219,7 +219,7 @@ GCP APIs (Cloud SQL, GCS, Compute Engine, etc.)
 ### 3. Minikube環境のリソース作成 (`resources/minikube/apply.sh`)
 
 #### 実行タイミング
-`build.sh` から自動的に呼び出される (手動実行も可能)
+`SETUP_MINIKUBE.sh` から自動的に呼び出される (手動実行も可能)
 
 #### スクリプトの処理フロー
 
@@ -382,7 +382,7 @@ graph TD
 ### 4. Minikube環境へのデプロイ (`deployment/minikube/deploy.sh`)
 
 #### 実行タイミング
-`build.sh` から自動的に呼び出される (手動実行も可能)
+`SETUP_MINIKUBE.sh` から自動的に呼び出される (手動実行も可能)
 
 #### スクリプトの処理フロー
 
@@ -452,7 +452,7 @@ graph TD
 
 ## 各スクリプトの詳細解説
 
-### `build.sh` (Minikube環境構築スクリプト)
+### `SETUP_MINIKUBE.sh` (Minikube環境構築スクリプト)
 
 **目的**: Minikube環境を完全自動でセットアップ
 
@@ -652,7 +652,7 @@ env = "minikube"
 EOF
 
 # 全自動セットアップ
-./build.sh
+./SETUP_MINIKUBE.sh
 ```
 
 ---
@@ -739,7 +739,7 @@ terraform force-unlock <LOCK_ID>
 
 | 環境 | コマンド | 備考 |
 |------|----------|------|
-| **Minikube** | `./build.sh` | 全自動 |
+| **Minikube** | `./SETUP_MINIKUBE.sh` | 全自動 |
 | **GCP (初回)** | `global/apply.sh` → `build` → `push` → `deployment/apply.sh` → `deploy.sh` | 手動実行 |
 | **GCP (2回目以降)** | `build` → `push` → `deploy.sh` | イメージ更新のみ |
 
@@ -747,14 +747,14 @@ terraform force-unlock <LOCK_ID>
 
 | スクリプト | 役割 | 実行頻度 |
 |-----------|------|----------|
-| `build.sh` | Minikube環境全自動セットアップ | 初回のみ |
+| `SETUP_MINIKUBE.sh` | Minikube環境全自動セットアップ | 初回のみ |
 | `resources/global/apply.sh` | GCPグローバルリソース作成 | 1回のみ |
 | `resources/deployment/apply.sh` | 名前空間リソース作成 | 名前空間ごと |
-| `resources/minikube/apply.sh` | Minikube K8sリソース作成 | build.shから自動 |
+| `resources/minikube/apply.sh` | Minikube K8sリソース作成 | SETUP_MINIKUBE.shから自動 |
 | `deployment/deploy.sh` | アプリケーション統合デプロイ | イメージ更新時 |
 | `deployment/manatee/deploy.sh` | ManaTEE本体デプロイ | deploy.shから自動 |
 | `deployment/jupyterhub/deploy.sh` | JupyterHubデプロイ | deploy.shから自動 |
-| `deployment/minikube/deploy.sh` | Minikube統合デプロイ | build.shから自動 |
+| `deployment/minikube/deploy.sh` | Minikube統合デプロイ | SETUP_MINIKUBE.shから自動 |
 
 ---
 

@@ -43,7 +43,7 @@
 #
 # ■■■■■■■■ 実行前の前提条件 ■■■■■■■■
 # 1. Minikubeクラスタが起動しており、Manateeがデプロイ済みであること。
-#    (プロジェクトの build.sh や deployment/minikube/deploy.sh が実行済みであること)
+#    (プロジェクトの SETUP_MINIKUBE.sh や deployment/minikube/deploy.sh が実行済みであること)
 # 2. `mc` (MinIO Client) がインストール済みであること。
 #    インストール方法: https://min.io/docs/minio/linux/reference/minio-client.html
 # 3. `kubectl` がMinikubeクラスタを指していること。

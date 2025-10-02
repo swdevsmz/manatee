@@ -1,0 +1,107 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug API Server",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/app/api",
+            "env": {
+                "MYSQL_USERNAME": "root",
+                "MYSQL_PASSWORD": "password",
+                "MYSQL_HOST": "localhost",
+                "MYSQL_PORT": "3306",
+                "MYSQL_DATABASE": "manatee",
+                "GCS_BUCKET": "manatee-data",
+                "GCS_ENDPOINT": "localhost:9000",
+                "GCS_USE_SSL": "false",
+                "GCS_ACCESS_KEY": "minioadmin",
+                "GCS_SECRET_KEY": "minioadmin"
+            },
+            "args": [],
+            "showLog": true,
+            "preLaunchTask": "port-forward-mysql-minio"
+        },
+        {
+            "name": "Debug Reconciler",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/app/reconciler",
+            "env": {
+                "MYSQL_USERNAME": "root",
+                "MYSQL_PASSWORD": "password",
+                "MYSQL_HOST": "localhost",
+                "MYSQL_PORT": "3306",
+                "MYSQL_DATABASE": "manatee",
+                "GCS_BUCKET": "manatee-data",
+                "GCS_ENDPOINT": "localhost:9000",
+                "GCS_USE_SSL": "false",
+                "GCS_ACCESS_KEY": "minioadmin",
+                "GCS_SECRET_KEY": "minioadmin",
+                "K8S_IN_CLUSTER": "false"
+            },
+            "args": [],
+            "showLog": true,
+            "preLaunchTask": "port-forward-mysql-minio"
+        },
+        {
+            "name": "Debug Executor Attestation",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/app/executor/attestation",
+            "env": {
+                "NONCE": "test-nonce-12345678"
+            },
+            "args": [],
+            "showLog": true
+        },
+        {
+            "name": "Attach to API Server (Remote)",
+            "type": "go",
+            "request": "attach",
+            "mode": "remote",
+            "remotePath": "${workspaceFolder}",
+            "port": 2345,
+            "host": "localhost",
+            "showLog": true,
+            "preLaunchTask": "port-forward-api-delve"
+        },
+        {
+            "name": "Debug Python Script",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/app/jupyterlab_manatee"
+            }
+        },
+        {
+            "name": "Debug Current Test (Go)",
+            "type": "go",
+            "request": "launch",
+            "mode": "test",
+            "program": "${fileDirname}",
+            "env": {},
+            "args": [
+                "-test.run",
+                "${selectedText}"
+            ],
+            "showLog": true
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Debug API + Reconciler",
+            "configurations": [
+                "Debug API Server",
+                "Debug Reconciler"
+            ],
+            "stopAll": true
+        }
+    ]
+}

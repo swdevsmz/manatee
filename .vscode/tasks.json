@@ -1,0 +1,134 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "port-forward-mysql-minio",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "kubectl port-forward -n manatee svc/mysql 3306:3306 & kubectl port-forward -n manatee svc/minio 9000:9000 & echo 'Port forwarding started. Press Ctrl+C to stop.'"
+            ],
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "^(.*)$",
+                    "file": 1
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^Forwarding from",
+                    "endsPattern": "^Forwarding from.*9000"
+                }
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "port-forward-api-delve",
+            "type": "shell",
+            "command": "kubectl",
+            "args": [
+                "port-forward",
+                "-n",
+                "manatee",
+                "deployment/api-server",
+                "2345:2345"
+            ],
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "^(.*)$",
+                    "file": 1
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^Forwarding from",
+                    "endsPattern": "^Forwarding from.*2345"
+                }
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "stop-port-forwards",
+            "type": "shell",
+            "command": "pkill -f 'kubectl port-forward'",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "build-api-server",
+            "type": "shell",
+            "command": "bazelisk",
+            "args": [
+                "build",
+                "//app/api:api"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "build-reconciler",
+            "type": "shell",
+            "command": "bazelisk",
+            "args": [
+                "build",
+                "//app/reconciler:reconciler"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "test-all",
+            "type": "shell",
+            "command": "bazelisk",
+            "args": [
+                "test",
+                "//..."
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

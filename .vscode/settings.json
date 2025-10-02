@@ -1,0 +1,58 @@
+{
+    "go.toolsManagement.autoUpdate": true,
+    "go.useLanguageServer": true,
+    "go.lintTool": "golangci-lint",
+    "go.lintOnSave": "workspace",
+    "go.buildOnSave": "off",
+    "go.testOnSave": false,
+    "go.coverOnSave": false,
+    "go.gopath": "${workspaceFolder}",
+    "go.goroot": "",
+    "go.inferGopath": true,
+    "go.buildTags": "",
+    "go.testFlags": [
+        "-v"
+    ],
+    "go.testTimeout": "30s",
+    "go.delveConfig": {
+        "dlvLoadConfig": {
+            "followPointers": true,
+            "maxVariableRecurse": 1,
+            "maxStringLen": 512,
+            "maxArrayValues": 64,
+            "maxStructFields": -1
+        },
+        "apiVersion": 2,
+        "showGlobalVariables": true
+    },
+    "[go]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    },
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    },
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.autoImportCompletions": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/bazel-*": true
+    },
+    "files.watcherExclude": {
+        "**/bazel-*/**": true
+    },
+    "search.exclude": {
+        "**/bazel-*": true,
+        "**/node_modules": true
+    }
+}

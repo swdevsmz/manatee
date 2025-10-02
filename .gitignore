@@ -7,3 +7,4 @@ env.bzl
 .DS_Store
 
 USECASE.md
+socat.log
